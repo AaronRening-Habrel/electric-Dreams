@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Electric Dreams</title>
+
+	<style type="text/css">
+
+		body {
+			font-family: monospace;
+			font-size: 2em;
+			background-color: rgb(40, 40, 40);
+		}
+		button {
+			display: none;
+		}
+		input{
+			font-size: 1em;
+			font-family: monospace;
+		}
+		.red { color: red;}
+		.green {color: rgb(74, 247, 31);}
+		h1{color: white;}
+		main{
+			width:50%;
+			margin: 1em auto;
+			padding: 1em 1em 2em 1em;
+			border-radius: 5px;
+			border: 3px solid rgb(37, 74, 247);
+			background-color: rgb(52, 116, 116);
+		}
+	</style>
+</head>
+
+<body>
+	<main>
+		<h1>Electric Dreams</h1>
+		<p id="computer">Hello, would you like to answer a few questions?</p>
+    <input id="human" type="text" placeholder="Type your response...">
+    <button>Enter</button>
+
+    <script type="text/javascript">
+        var computer = document.querySelector('#computer');
+        var human = document.getElementById('human');
+        var button = document.getElementsByTagName('button')[0];
+        var responseNumber;
+        var newResponse;
+        var humanMsg = "";
+        var computerMsg = "";
+
+        var questionTrack = "start";
+        var genericResponses = [
+            "Please try again.",
+            "I think we will get along swimmingly.",
+						"CENSORED you too.",
+						"ERROR ERROR ERROR."
+        ];
+        human.focus();
+        button.addEventListener("click", clickHandler, false);
+        function clickHandler() {
+            playGame();
+        }
+        window.addEventListener("keydown", keydownHandler, false);
+        function keydownHandler(event) {
+            if (event.keyCode === 13) {
+                playGame();
+            }
+        }
+        function playGame() {
+            //let the games begin
+            humanMsg = (human.value).toLowerCase();
+
+            switch (questionTrack) {
+                case "start":
+                    firstAnalysis();
+                    break;
+                case "type":
+                    typeAnalysis();
+                    break;
+                case "settings":
+                    settingsAnalysis();
+                    break;
+                case "dnd":
+                    dndAnalysis();
+                    break;
+                case "swn":
+                    swnAnalysis();
+                    break;
+                default:
+                    genericResponse();
+                    break;
+            }
+            computer.innerHTML = computerMsg;
+
+            human.value = "";
+        }
+        function genericResponse() {
+
+            if (genericResponses.length > 0) {
+                newResponse = Math.floor(Math.random() * genericResponses.length);
+                responseNumber = newResponse;
+                computerMsg = genericResponses[responseNumber];
+                genericResponses.splice(responseNumber, 1);
+            } else {
+                computerMsg = "Go outside, you are boring me.";
+                human.className = "displayNone";
+                button.className = "displayNone";
+                setTimeout(endGame, 2000);
+            }
+        }
+        function firstAnalysis() {
+            if (humanMsg.indexOf("sure") !== -1) {
+                computerMsg = "That is great. Do you like table top role playing games?";
+                questionTrack = "type";
+            } else if (humanMsg.indexOf("no") !== -1) {
+                computerMsg = "Then why are you here?";
+                questionTrack = location.assign("https://en.wikipedia.org/wiki/Tabletop_role-playing_game");
+            } else {
+                genericResponse();
+            }
+        }
+        function typeAnalysis() {
+            if (humanMsg.indexOf("yes") !== -1) {
+                computerMsg = "Me too. Do you like magical settings or science fictional settings?";
+                questionTrack = "settings";
+            } else if (humanMsg.indexOf("no") !== -1) {
+                computerMsg = "I thought we were having fun.";
+                questionTrack = location.assign("https://www.gamesradar.com/best-tabletop-rpgs/");
+            } else {
+                genericResponse();
+            }
+        }
+        function settingsAnalysis() {
+            if (humanMsg.indexOf("magical") !== -1) {
+                computerMsg = "That is good. Do you play Dungeons and Dragons?";
+                questionTrack = "dnd";
+            } else if (humanMsg.indexOf("science fictional") !== -1) {
+                computerMsg = "That is good. Do you play Stars Without Number?";
+                questionTrack = "swn";
+            } else {
+                genericResponse();
+            }
+        }
+        function dndAnalysis() {
+            if (humanMsg.indexOf("yes") !== -1) {
+                computerMsg = "Me too. Its so fun!";
+                questionTrack = location.assign("http://dnd.wizards.com/");
+            } else if (humanMsg.indexOf("no") !== -1) {
+                computerMsg = "That is a shame.";
+                questionTrack = location.assign("https://en.wikipedia.org/wiki/Dungeons_%26_Dragons");
+            } else {
+                genericResponse();
+            }
+        }
+        function swnAnalysis() {
+            if (humanMsg.indexOf("yes") !== -1) {
+                computerMsg = "I played it a couple times. I recommend it.";
+                questionTrack = location.assign("https://www.drivethrurpg.com/product/230009/Stars-Without-Number-Revised-Edition-Free-Version");
+            } else if (humanMsg.indexOf("no") !== -1) {
+                computerMsg = "I think you should give it a try.";
+                questionTrack = location.assign("http://badwrong.fun/rpg-review-stars-without-number-revised-edition/");
+            } else {
+                genericResponse();
+            }
+        }
+        function endGame() {
+            ////.assign() leaves the back button working
+            ////.replace() disables the back button by replacing the location in the history
+            location.assign("http://en.wikipedia.org/wiki/Electric_Dreams_(film)");
+        }
+    </script>
+</body>
+
+</html>
